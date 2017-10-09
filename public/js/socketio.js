@@ -1,4 +1,4 @@
-var socket = io();
+var socket = io.connect('http://localhost:3000/');
 
 var message = document.getElementById('textinput');
 var button = '#submitchat';
@@ -6,7 +6,7 @@ var chatbox = '#chatbox-container';
 var istyping = document.getElementById('isTyping');
 
 // Prompt username
-const NAME = prompt("nama apa ?");
+NAME = prompt("nama apa ?");
 
 $(button).click(function(){
     socket.emit('chat',{
@@ -54,4 +54,5 @@ socket.on('typing', function(data) {
 
 socket.on('counter', function(data){
     $('.counter').html('<h2>'+data+'</h2>');
-})
+    $('.online-list ul').append('<li>'+NAME+'</li>');
+});

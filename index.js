@@ -18,19 +18,20 @@ app.get('/',function(req,res){
 
 var io = socket(server);
 let count = 0;
+let NAME;
 
-io.on('connection', function(socket){
+io.sockets.on('connection', function(socket){
     console.log('Made a Socket connection ID : ' + socket.id)
     console.log('total connection : '+ ++count);
     io.sockets.emit('counter', count);
 
     socket.on('chat', function(data){
-      var message = striptags(data);
-      io.sockets.emit('chat', message);
+      var message = striptags(data); // this is not working somehow.
+      io.sockets.emit('chat', data);
     })
 
     socket.on('typing', function(data){
-        socket.broadcast.emit('typing', data);
+        io.sockets.emit('typing', data);
     })
 
     socket.on('disconnect' , function(){
