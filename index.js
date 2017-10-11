@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const socket = require('socket.io');
 const ejs = require('ejs');
-const striptags = require('striptags');
 
 const server = app.listen(process.env.PORT || 3000,
     function(){
@@ -26,7 +25,6 @@ io.sockets.on('connection', function(socket){
     io.sockets.emit('counter', count);
 
     socket.on('chat', function(data){
-      var message = striptags(data); // this is not working somehow.
       io.sockets.emit('chat', data);
     })
 
@@ -40,3 +38,6 @@ io.sockets.on('connection', function(socket){
         io.sockets.emit('counter', count);
     })
 });
+
+
+
