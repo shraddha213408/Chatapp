@@ -1,12 +1,28 @@
-var socket = io.connect('http://localhost:3000/');
-
+var socket = io();
 var message = document.getElementById('textinput');
 var button = '#submitchat';
 var chatbox = '#chatbox-container';
 var istyping = document.getElementById('isTyping');
+var enterChat = '#enter-chat';
+let onlineList = [];
 
-// Prompt username
-NAME = prompt("nama apa ?");
+$(enterChat).on('click', function(){
+  NAME = prompt("nama apa ?");
+  if (NAME !== '') {
+    onlineList.push({'name':NAME,'id':onlineList.length+1});
+    console.log('onlineList', onlineList);
+    socket.emit('counter',{
+      count: onlineList.length,
+      name: onlineList
+    })
+  }
+});
+
+if (onlineList.length > 0) {
+  onlineList.forEach(function(item) {
+    $('.online-list ul').append('<li>'+item+'</li>');
+  })
+}
 
 $(button).click(function(){
     socket.emit('chat',{
@@ -53,6 +69,12 @@ socket.on('typing', function(data) {
 });
 
 socket.on('counter', function(data){
-    $('.counter').html('<h2>'+data+'</h2>');
-    $('.online-list ul').append('<li>'+NAME+'</li>');
+    $('.counter').html('<h2>'+data.count+'</h2>');
+    if (data.count > 0) {
+      $('.online-list ul').html("");
+      data.name.forEach(function(item) {
+        $('.online-list ul').append('<li>'+item.name+'</li>');
+      })
+    }
+    // $('.online-list ul').append('<li>'+data.name+'</li>');
 });

@@ -4,7 +4,8 @@ $(document).ready(function(){
   var message = document.getElementById('textinput');
   var button = '#submitchat';
   var chatbox = '#chatbox-container';
-
+  var count = 0;
+  var onlineList = [];
 
 //if the user use BUTTON to submit the message
 //   $(button).click(function(){
